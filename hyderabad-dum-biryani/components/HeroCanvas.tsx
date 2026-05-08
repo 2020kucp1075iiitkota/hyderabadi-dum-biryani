@@ -61,7 +61,8 @@ const storyBeats: StoryBeat[] = [
     endProgress: 1.0,
     align: "center",
     headline: "Taste everything. Forget everything else.",
-    subtitle: "Hyderabad Dum Biryani. Crafted for the senses. Built on centuries.",
+    subtitle:
+      "Hyderabad Dum Biryani. Crafted for the senses. Built on centuries.",
     lines: [],
     cta: {
       primary: "Order Now",
@@ -81,7 +82,6 @@ export default function HeroCanvas() {
   const [imagesLoaded, setImagesLoaded] = useState(false);
   const [loadProgress, setLoadProgress] = useState(0);
 
-  // Preload all frames
   useEffect(() => {
     let loadedCount = 0;
     const images: HTMLImageElement[] = [];
@@ -102,7 +102,6 @@ export default function HeroCanvas() {
     imagesRef.current = images;
   }, []);
 
-  // Draw frame on canvas
   const drawFrame = useCallback((frameIndex: number) => {
     const canvas = canvasRef.current;
     const ctx = canvas?.getContext("2d");
@@ -115,7 +114,6 @@ export default function HeroCanvas() {
     ctx.fillStyle = "#040810";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // Maintain aspect ratio, cover canvas
     const imgRatio = img.width / img.height;
     const canvasRatio = canvas.width / canvas.height;
     let drawWidth, drawHeight, drawX, drawY;
@@ -135,13 +133,13 @@ export default function HeroCanvas() {
     ctx.drawImage(img, drawX, drawY, drawWidth, drawHeight);
   }, []);
 
-  // Scroll handler
   useEffect(() => {
     const handleScroll = () => {
       if (!containerRef.current) return;
 
       const rect = containerRef.current.getBoundingClientRect();
-      const scrollableHeight = containerRef.current.offsetHeight - window.innerHeight;
+      const scrollableHeight =
+        containerRef.current.offsetHeight - window.innerHeight;
       const scrolled = -rect.top;
       const progress = Math.max(0, Math.min(1, scrolled / scrollableHeight));
 
@@ -152,39 +150,44 @@ export default function HeroCanvas() {
         Math.max(0, Math.round(progress * (TOTAL_FRAMES - 1)))
       );
 
-      if (frameIndex !== currentFrameRef.current && imagesRef.current[frameIndex]) {
+      if (
+        frameIndex !== currentFrameRef.current &&
+        imagesRef.current[frameIndex]
+      ) {
         currentFrameRef.current = frameIndex;
         cancelAnimationFrame(rafIdRef.current);
         rafIdRef.current = requestAnimationFrame(() => drawFrame(frameIndex));
       }
     };
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    window.addEventListener("resize", () => {
+    const handleResize = () => {
       if (imagesRef.current[currentFrameRef.current]) {
         drawFrame(currentFrameRef.current);
       }
-    });
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleResize);
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleResize);
       cancelAnimationFrame(rafIdRef.current);
     };
   }, [drawFrame]);
 
-  // Draw first frame when loaded
   useEffect(() => {
     if (imagesLoaded) {
       drawFrame(0);
     }
   }, [imagesLoaded, drawFrame]);
 
-  // Get active beat
   const activeBeat = storyBeats.find(
-    (beat) => scrollProgress >= beat.startProgress && scrollProgress < beat.endProgress
+    (beat) =>
+      scrollProgress >= beat.startProgress &&
+      scrollProgress < beat.endProgress
   );
 
-  // Calculate beat-local progress for fade
   const getBeatOpacity = (beat: StoryBeat) => {
     const beatDuration = beat.endProgress - beat.startProgress;
     const beatProgress = (scrollProgress - beat.startProgress) / beatDuration;
@@ -193,14 +196,28 @@ export default function HeroCanvas() {
     return Math.min(fadeIn, fadeOut);
   };
 
-  const getAlignmentClasses = (align: string) => {
-    switch (align) {
-      case "left":
-        return "items-start text-left left-[8%] max-w-xl";
-      case "right":
-        return "items-end text-right right-[8%] max-w-xl";
-      default:
-        return "items-center text-center left-1/2 -translate-x-1/2 max-w-2xl";
+  const getAlignmentStyles = (align: string) => {
+    // On mobile always center, on desktop use the original alignment
+    const base = {
+      position: "absolute" as const,
+      top: "50%",
+      transform: "translateY(-50%)",
+      display: "flex",
+      flexDirection: "column" as const,
+      gap: "12px",
+      padding: "0 20px",
+      zIndex: 10,
+      pointerEvents: "none" as const,
+      width: "100%",
+      maxWidth: "100vw",
+    };
+
+    if (align === "left") {
+      return { ...base };
+    } else if (align === "right") {
+      return { ...base };
+    } else {
+      return { ...base };
     }
   };
 
@@ -217,12 +234,12 @@ export default function HeroCanvas() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="flex flex-col items-center gap-6"
+            className="flex flex-col items-center gap-6 px-8 text-center"
           >
-            <h2 className="text-2xl font-light tracking-wider text-white/80">
+            <h2 className="text-xl md:text-2xl font-light tracking-wider text-white/80">
               HYDERABAD DUM BIRYANI
             </h2>
-            <div className="w-48 h-[2px] bg-white/10 rounded-full overflow-hidden">
+            <div className="w-40 md:w-48 h-[2px] bg-white/10 rounded-full overflow-hidden">
               <motion.div
                 className="h-full bg-gradient-to-r from-saffron to-amber"
                 style={{ width: `${loadProgress * 100}%` }}
@@ -244,12 +261,11 @@ export default function HeroCanvas() {
           style={{ background: "#040810" }}
         />
 
-        {/* Subtle radial gradient overlay */}
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
             background:
-              "radial-gradient(ellipse at center, rgba(13,8,0,0.3) 0%, transparent 70%)",
+              "radial-gradient(ellipse at center, rgba(13,8,0,0.4) 0%, transparent 70%)",
           }}
         />
 
@@ -263,56 +279,82 @@ export default function HeroCanvas() {
           return (
             <motion.div
               key={index}
-              className={`absolute top-1/2 -translate-y-1/2 flex flex-col gap-4 px-6 z-10 pointer-events-none ${getAlignmentClasses(
-                beat.align
-              )}`}
+              style={{
+                position: "absolute",
+                top: "50%",
+                left: beat.align === "right" ? "auto" : beat.align === "left" ? "0" : "50%",
+                right: beat.align === "right" ? "0" : "auto",
+                transform: beat.align === "center" ? "translate(-50%, -50%)" : "translateY(-50%)",
+                display: "flex",
+                flexDirection: "column",
+                gap: "12px",
+                zIndex: 10,
+                pointerEvents: "none",
+              }}
+              className={`hero-beat hero-beat--${beat.align}`}
               animate={{
                 opacity,
                 y: isActive ? 0 : 30,
               }}
               transition={{ duration: 0.4, ease: "easeOut" }}
             >
-              <h1
-                className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.1]"
-                style={{ color: "rgba(255,255,255,0.9)" }}
-              >
-                {beat.headline}
-              </h1>
+              <h1 className="hero-headline">{beat.headline}</h1>
 
               {beat.subtitle && (
-                <p
-                  className="text-lg md:text-xl lg:text-2xl font-light tracking-wide"
-                  style={{ color: "rgba(255,255,255,0.6)" }}
-                >
-                  {beat.subtitle}
-                </p>
+                <p className="hero-subtitle">{beat.subtitle}</p>
               )}
 
               {beat.lines.map((line, li) => (
-                <p
-                  key={li}
-                  className="text-base md:text-lg font-light leading-relaxed"
-                  style={{ color: "rgba(255,255,255,0.5)" }}
-                >
+                <p key={li} className="hero-line">
                   {line}
                 </p>
               ))}
 
               {beat.cta && (
-                <div className="flex flex-col items-center gap-4 mt-6 pointer-events-auto">
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    gap: "16px",
+                    marginTop: "16px",
+                    pointerEvents: "auto",
+                  }}
+                >
                   <a
                     href="#order"
-                    className="btn-gradient px-8 py-3.5 rounded-full text-base font-semibold tracking-wide"
+                    className="btn-gradient"
+                    style={{
+                      padding: "14px 32px",
+                      borderRadius: "999px",
+                      fontSize: "16px",
+                      fontWeight: 600,
+                      letterSpacing: "0.5px",
+                      textDecoration: "none",
+                    }}
                   >
                     {beat.cta.primary}
                   </a>
                   <a
                     href="#menu"
-                    className="text-saffron hover:text-amber transition-colors text-sm tracking-wide"
+                    style={{
+                      color: "#FF9500",
+                      fontSize: "14px",
+                      letterSpacing: "0.5px",
+                      textDecoration: "none",
+                    }}
                   >
                     {beat.cta.secondary} →
                   </a>
-                  <p className="text-xs text-white/30 mt-2 tracking-wider">
+                  <p
+                    style={{
+                      fontSize: "11px",
+                      color: "rgba(255,255,255,0.3)",
+                      marginTop: "8px",
+                      letterSpacing: "1px",
+                      textAlign: "center",
+                    }}
+                  >
                     {beat.cta.micro}
                   </p>
                 </div>
@@ -321,13 +363,13 @@ export default function HeroCanvas() {
           );
         })}
 
-        {/* Scroll indicator at the very beginning */}
+        {/* Scroll indicator */}
         {scrollProgress < 0.05 && imagesLoaded && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1.5, duration: 1 }}
-            className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+            className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
           >
             <span className="text-xs text-white/30 tracking-widest uppercase">
               Scroll to explore
@@ -342,6 +384,68 @@ export default function HeroCanvas() {
           </motion.div>
         )}
       </div>
+
+      <style>{`
+        .hero-beat {
+          padding: 0 20px;
+          max-width: 92vw;
+        }
+        .hero-beat--left { max-width: min(560px, 92vw); }
+        .hero-beat--right { max-width: min(560px, 92vw); }
+        .hero-beat--center { max-width: min(640px, 92vw); }
+
+        .hero-headline {
+          color: rgba(255,255,255,0.9);
+          font-weight: 700;
+          line-height: 1.1;
+          letter-spacing: -0.02em;
+          font-size: clamp(1.6rem, 6vw, 4.5rem);
+        }
+        .hero-subtitle {
+          color: rgba(255,255,255,0.6);
+          font-weight: 300;
+          letter-spacing: 0.02em;
+          font-size: clamp(1rem, 3vw, 1.5rem);
+        }
+        .hero-line {
+          color: rgba(255,255,255,0.5);
+          font-weight: 300;
+          line-height: 1.6;
+          font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+        }
+
+        @media (min-width: 768px) {
+          .hero-beat--left {
+            left: 8% !important;
+            right: auto !important;
+            transform: translateY(-50%) !important;
+            text-align: left;
+            align-items: flex-start;
+          }
+          .hero-beat--right {
+            right: 8% !important;
+            left: auto !important;
+            transform: translateY(-50%) !important;
+            text-align: right;
+            align-items: flex-end;
+          }
+          .hero-beat--center {
+            left: 50% !important;
+            transform: translate(-50%, -50%) !important;
+            text-align: center;
+            align-items: center;
+          }
+        }
+        @media (max-width: 767px) {
+          .hero-beat {
+            left: 50% !important;
+            right: auto !important;
+            transform: translate(-50%, -50%) !important;
+            text-align: center !important;
+            align-items: center !important;
+          }
+        }
+      `}</style>
     </section>
   );
 }

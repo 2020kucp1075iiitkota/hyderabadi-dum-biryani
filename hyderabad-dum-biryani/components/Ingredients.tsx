@@ -59,14 +59,18 @@ export default function Ingredients() {
     <section
       style={{
         background: "#040810",
-        paddingTop: "140px",
-        paddingBottom: "140px",
-        paddingLeft: "80px",
-        paddingRight: "80px",
+        paddingTop: "clamp(60px, 10vw, 140px)",
+        paddingBottom: "clamp(60px, 10vw, 140px)",
       }}
     >
-      <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-        {/* Label — left-aligned */}
+      <div
+        style={{
+          maxWidth: "1200px",
+          margin: "0 auto",
+          padding: "0 clamp(20px, 5vw, 80px)",
+        }}
+      >
+        {/* Label */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -79,7 +83,7 @@ export default function Ingredients() {
             textTransform: "uppercase",
             fontWeight: 500,
             marginBottom: "16px",
-            textAlign: "center" as const,
+            textAlign: "center",
             display: "block",
             width: "100%",
           }}
@@ -87,7 +91,7 @@ export default function Ingredients() {
           Ingredients
         </motion.div>
 
-        {/* Title — left-aligned */}
+        {/* Title */}
         <motion.h2
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -95,25 +99,18 @@ export default function Ingredients() {
           transition={{ duration: 0.8, delay: 0.1 }}
           style={{
             color: "#ffffff",
-            fontSize: "72px",
+            fontSize: "clamp(2.5rem, 8vw, 4.5rem)",
             fontWeight: 800,
-            marginBottom: "48px",
+            marginBottom: "40px",
             letterSpacing: "-0.02em",
-            textAlign: "center" as const,
+            textAlign: "center",
           }}
         >
           What goes inside.
         </motion.h2>
 
         {/* Grid */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(4, 1fr)",
-            gap: "24px",
-            alignItems: "stretch",
-          }}
-        >
+        <div className="ingredients-grid">
           {ingredients.map((item, index) => (
             <motion.div
               key={item.name}
@@ -129,11 +126,11 @@ export default function Ingredients() {
                 flexDirection: "column",
               }}
             >
-              {/* Image — fixed 220px */}
+              {/* Image */}
               <div
                 style={{
                   width: "100%",
-                  height: "220px",
+                  height: "200px",
                   position: "relative",
                   overflow: "hidden",
                   flexShrink: 0,
@@ -144,16 +141,16 @@ export default function Ingredients() {
                   alt={item.name}
                   fill
                   style={{ objectFit: "cover" }}
-                  sizes="(max-width: 1200px) 50vw, 25vw"
+                  sizes="(max-width: 480px) 100vw, (max-width: 767px) 50vw, 25vw"
                 />
               </div>
 
               {/* Text */}
-              <div style={{ padding: "24px", flex: 1 }}>
+              <div style={{ padding: "20px", flex: 1 }}>
                 <div
                   style={{
                     color: "#ffffff",
-                    fontSize: "18px",
+                    fontSize: "17px",
                     fontWeight: 700,
                     marginBottom: "4px",
                   }}
@@ -165,7 +162,7 @@ export default function Ingredients() {
                     color: "rgba(255,255,255,0.5)",
                     fontSize: "13px",
                     fontStyle: "italic",
-                    marginBottom: "12px",
+                    marginBottom: "10px",
                   }}
                 >
                   {item.origin}
@@ -173,7 +170,7 @@ export default function Ingredients() {
                 <div
                   style={{
                     color: "rgba(255,255,255,0.6)",
-                    fontSize: "14px",
+                    fontSize: "13px",
                     lineHeight: 1.6,
                   }}
                 >
@@ -184,6 +181,24 @@ export default function Ingredients() {
           ))}
         </div>
       </div>
+
+      <style>{`
+        .ingredients-grid {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 20px;
+          align-items: stretch;
+        }
+        @media (max-width: 1024px) {
+          .ingredients-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+        @media (max-width: 767px) {
+          .ingredients-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+        }
+        @media (max-width: 400px) {
+          .ingredients-grid { grid-template-columns: 1fr; }
+        }
+      `}</style>
     </section>
   );
 }

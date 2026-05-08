@@ -29,17 +29,23 @@ export default function CelebrityReviews() {
     <section
       style={{
         background: "#040810",
-        paddingTop: "140px",
-        paddingBottom: "140px",
-        paddingLeft: "80px",
-        paddingRight: "80px",
+        paddingTop: "clamp(60px, 10vw, 140px)",
+        paddingBottom: "clamp(60px, 10vw, 140px)",
         position: "relative",
         overflow: "hidden",
       }}
     >
       <NizamiSectionOverlay />
-      <div style={{ maxWidth: "1200px", margin: "0 auto", position: "relative", zIndex: 1 }}>
-        {/* Label — centered */}
+      <div
+        style={{
+          maxWidth: "1200px",
+          margin: "0 auto",
+          padding: "0 clamp(20px, 5vw, 80px)",
+          position: "relative",
+          zIndex: 1,
+        }}
+      >
+        {/* Label */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -58,7 +64,7 @@ export default function CelebrityReviews() {
           What They Say
         </motion.div>
 
-        {/* Title — centered */}
+        {/* Title */}
         <motion.h2
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -67,9 +73,9 @@ export default function CelebrityReviews() {
           style={{
             textAlign: "center",
             color: "#ffffff",
-            fontSize: "64px",
+            fontSize: "clamp(2rem, 7vw, 4rem)",
             fontWeight: 700,
-            marginBottom: "64px",
+            marginBottom: "48px",
             letterSpacing: "-0.02em",
           }}
         >
@@ -77,13 +83,7 @@ export default function CelebrityReviews() {
         </motion.h2>
 
         {/* Reviews grid */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(3, 1fr)",
-            gap: "32px",
-          }}
-        >
+        <div className="reviews-grid">
           {reviews.map((review, index) => (
             <motion.div
               key={review.name}
@@ -94,41 +94,41 @@ export default function CelebrityReviews() {
               style={{
                 background: "#0F0F0F",
                 borderRadius: "16px",
-                padding: "48px",
+                padding: "clamp(24px, 4vw, 48px)",
                 border: "1px solid rgba(255,149,0,0.15)",
               }}
             >
-              {/* Opening quote mark */}
+              {/* Quote mark */}
               <div
                 style={{
                   color: "#FF9500",
-                  fontSize: "80px",
+                  fontSize: "64px",
                   lineHeight: 0.8,
-                  marginBottom: "24px",
+                  marginBottom: "20px",
                   fontFamily: "Georgia, serif",
                 }}
               >
                 &ldquo;
               </div>
 
-              {/* Quote text */}
+              {/* Quote */}
               <div
                 style={{
                   color: "rgba(255,255,255,0.8)",
-                  fontSize: "18px",
+                  fontSize: "clamp(15px, 2vw, 18px)",
                   fontStyle: "italic",
                   lineHeight: 1.8,
-                  marginBottom: "32px",
+                  marginBottom: "28px",
                 }}
               >
                 {review.quote}
               </div>
 
-              {/* Reviewer name */}
+              {/* Name */}
               <div
                 style={{
                   color: "#ffffff",
-                  fontSize: "20px",
+                  fontSize: "18px",
                   fontWeight: 700,
                   marginBottom: "6px",
                 }}
@@ -136,11 +136,11 @@ export default function CelebrityReviews() {
                 {review.name}
               </div>
 
-              {/* Reviewer title */}
+              {/* Title */}
               <div
                 style={{
                   color: "#FF9500",
-                  fontSize: "14px",
+                  fontSize: "13px",
                   letterSpacing: "1px",
                 }}
               >
@@ -150,6 +150,17 @@ export default function CelebrityReviews() {
           ))}
         </div>
       </div>
+
+      <style>{`
+        .reviews-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 24px;
+        }
+        @media (max-width: 900px) {
+          .reviews-grid { grid-template-columns: 1fr; gap: 20px; }
+        }
+      `}</style>
     </section>
   );
 }

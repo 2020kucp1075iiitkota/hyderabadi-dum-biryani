@@ -14,28 +14,15 @@ export default function Footer() {
       style={{
         background: "#020408",
         borderTop: "1px solid rgba(255,255,255,0.08)",
-        padding: "60px 80px",
+        padding: "clamp(40px, 6vw, 60px) clamp(20px, 5vw, 80px)",
       }}
     >
       <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-        {/* Three columns */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr 1fr",
-            gap: "40px",
-            alignItems: "center",
-          }}
-        >
-          {/* Left — brand */}
+        {/* Three columns — stacks on mobile */}
+        <div className="footer-grid">
+          {/* Brand */}
           <div>
-            <div
-              style={{
-                color: "#ffffff",
-                fontSize: "18px",
-                fontWeight: 700,
-              }}
-            >
+            <div style={{ color: "#ffffff", fontSize: "17px", fontWeight: 700 }}>
               Hyderabad Dum Biryani
             </div>
             <div
@@ -49,12 +36,12 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Center — nav links */}
+          {/* Nav links */}
           <div
             style={{
               display: "flex",
               flexDirection: "column",
-              gap: "12px",
+              gap: "10px",
               textAlign: "center",
             }}
           >
@@ -72,8 +59,7 @@ export default function Footer() {
                   (e.target as HTMLElement).style.color = "#FF9500";
                 }}
                 onMouseLeave={(e) => {
-                  (e.target as HTMLElement).style.color =
-                    "rgba(255,255,255,0.6)";
+                  (e.target as HTMLElement).style.color = "rgba(255,255,255,0.6)";
                 }}
               >
                 {link.name}
@@ -81,13 +67,14 @@ export default function Footer() {
             ))}
           </div>
 
-          {/* Right — social icons */}
+          {/* Social icons */}
           <div
             style={{
               display: "flex",
               flexDirection: "row",
               gap: "16px",
               justifyContent: "flex-end",
+              alignItems: "flex-start",
             }}
           >
             {/* Instagram */}
@@ -99,8 +86,7 @@ export default function Footer() {
                 (e.target as SVGElement).closest("a")!.style.color = "#FF9500";
               }}
               onMouseLeave={(e) => {
-                (e.target as SVGElement).closest("a")!.style.color =
-                  "rgba(255,255,255,0.4)";
+                (e.target as SVGElement).closest("a")!.style.color = "rgba(255,255,255,0.4)";
               }}
             >
               <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
@@ -117,8 +103,7 @@ export default function Footer() {
                 (e.target as SVGElement).closest("a")!.style.color = "#FF9500";
               }}
               onMouseLeave={(e) => {
-                (e.target as SVGElement).closest("a")!.style.color =
-                  "rgba(255,255,255,0.4)";
+                (e.target as SVGElement).closest("a")!.style.color = "rgba(255,255,255,0.4)";
               }}
             >
               <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
@@ -135,8 +120,7 @@ export default function Footer() {
                 (e.target as SVGElement).closest("a")!.style.color = "#FF9500";
               }}
               onMouseLeave={(e) => {
-                (e.target as SVGElement).closest("a")!.style.color =
-                  "rgba(255,255,255,0.4)";
+                (e.target as SVGElement).closest("a")!.style.color = "rgba(255,255,255,0.4)";
               }}
             >
               <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
@@ -146,10 +130,10 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Credit line */}
+        {/* Credit */}
         <div
           style={{
-            marginTop: "40px",
+            marginTop: "36px",
             textAlign: "center",
             color: "rgba(255,255,255,0.2)",
             fontSize: "13px",
@@ -158,6 +142,25 @@ export default function Footer() {
           Designed and developed by Neralla Renukesh
         </div>
       </div>
+
+      <style>{`
+        .footer-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr 1fr;
+          gap: 32px;
+          align-items: start;
+        }
+        @media (max-width: 767px) {
+          .footer-grid {
+            grid-template-columns: 1fr;
+            gap: 28px;
+            text-align: center;
+          }
+          .footer-grid > div:last-child {
+            justify-content: center !important;
+          }
+        }
+      `}</style>
     </footer>
   );
 }

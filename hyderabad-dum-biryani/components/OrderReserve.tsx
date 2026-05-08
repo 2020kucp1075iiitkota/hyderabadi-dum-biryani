@@ -13,17 +13,23 @@ export default function OrderReserve() {
       id="order"
       style={{
         background: "#040810",
-        paddingTop: "140px",
-        paddingBottom: "140px",
-        paddingLeft: "80px",
-        paddingRight: "80px",
+        paddingTop: "clamp(60px, 10vw, 140px)",
+        paddingBottom: "clamp(60px, 10vw, 140px)",
         position: "relative",
         overflow: "hidden",
       }}
     >
       <NizamiSectionOverlay />
-      <div style={{ maxWidth: "1200px", margin: "0 auto", position: "relative", zIndex: 1 }}>
-        {/* Label — centered */}
+      <div
+        style={{
+          maxWidth: "1200px",
+          margin: "0 auto",
+          padding: "0 clamp(20px, 5vw, 80px)",
+          position: "relative",
+          zIndex: 1,
+        }}
+      >
+        {/* Label */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -42,7 +48,7 @@ export default function OrderReserve() {
           Experience
         </motion.div>
 
-        {/* Headline — 80px */}
+        {/* Headline */}
         <motion.h2
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -51,9 +57,9 @@ export default function OrderReserve() {
           style={{
             textAlign: "center",
             color: "#ffffff",
-            fontSize: "80px",
+            fontSize: "clamp(2rem, 8vw, 5rem)",
             fontWeight: 900,
-            marginBottom: "24px",
+            marginBottom: "20px",
             letterSpacing: "-0.02em",
             lineHeight: 1.1,
           }}
@@ -70,9 +76,9 @@ export default function OrderReserve() {
           style={{
             textAlign: "center",
             color: "rgba(255,255,255,0.6)",
-            fontSize: "20px",
-            marginBottom: "48px",
-            maxWidth: "600px",
+            fontSize: "clamp(15px, 2.5vw, 20px)",
+            marginBottom: "40px",
+            maxWidth: "560px",
             marginLeft: "auto",
             marginRight: "auto",
             lineHeight: 1.6,
@@ -88,13 +94,8 @@ export default function OrderReserve() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            gap: "24px",
-          }}
+          className="order-buttons"
         >
-          {/* Primary */}
           <button
             onMouseEnter={() => setPrimaryHover(true)}
             onMouseLeave={() => setPrimaryHover(false)}
@@ -102,8 +103,8 @@ export default function OrderReserve() {
               background: "linear-gradient(135deg, #FF9500, #FFD700)",
               color: "#000000",
               fontWeight: 700,
-              fontSize: "18px",
-              padding: "20px 48px",
+              fontSize: "clamp(15px, 2.5vw, 18px)",
+              padding: "16px 40px",
               borderRadius: "999px",
               border: "none",
               cursor: "pointer",
@@ -112,34 +113,50 @@ export default function OrderReserve() {
                 ? "0 0 40px rgba(255,149,0,0.3)"
                 : "0 0 20px rgba(255,149,0,0.1)",
               transform: primaryHover ? "translateY(-2px)" : "translateY(0)",
+              width: "100%",
+              maxWidth: "280px",
             }}
           >
             Order Delivery
           </button>
 
-          {/* Secondary */}
           <button
             onMouseEnter={() => setSecondaryHover(true)}
             onMouseLeave={() => setSecondaryHover(false)}
             style={{
-              background: secondaryHover
-                ? "rgba(255,149,0,0.1)"
-                : "transparent",
+              background: secondaryHover ? "rgba(255,149,0,0.1)" : "transparent",
               color: "#ffffff",
               fontWeight: 700,
-              fontSize: "18px",
-              padding: "20px 48px",
+              fontSize: "clamp(15px, 2.5vw, 18px)",
+              padding: "16px 40px",
               borderRadius: "999px",
               border: "2px solid #FF9500",
               cursor: "pointer",
               transition: "all 0.3s ease",
               transform: secondaryHover ? "translateY(-2px)" : "translateY(0)",
+              width: "100%",
+              maxWidth: "280px",
             }}
           >
             Reserve a Table
           </button>
         </motion.div>
       </div>
+
+      <style>{`
+        .order-buttons {
+          display: flex;
+          justify-content: center;
+          gap: 20px;
+          flex-wrap: wrap;
+        }
+        @media (max-width: 480px) {
+          .order-buttons {
+            flex-direction: column;
+            align-items: center;
+          }
+        }
+      `}</style>
     </section>
   );
 }

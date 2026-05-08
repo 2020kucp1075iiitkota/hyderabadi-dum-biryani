@@ -15,24 +15,21 @@ interface MenuItem {
 const menuItems: MenuItem[] = [
   {
     name: "Hyderabadi Chicken Dum Biryani",
-    description:
-      "Classic slow-cooked chicken layered with saffron-infused basmati rice",
+    description: "Classic slow-cooked chicken layered with saffron-infused basmati rice",
     price: "₹449",
     image: "/images/menu-chicken-biryani.jpg",
     category: "Dum Biryani",
   },
   {
     name: "Mutton Dum Biryani",
-    description:
-      "Tender mutton pieces with hand-ground spice paste and aged rice",
+    description: "Tender mutton pieces with hand-ground spice paste and aged rice",
     price: "₹549",
     image: "/images/menu-mutton-biryani.jpg",
     category: "Dum Biryani",
   },
   {
     name: "Egg Biryani",
-    description:
-      "Dum-cooked eggs with aromatic basmati, topped with fried onions",
+    description: "Dum-cooked eggs with aromatic basmati, topped with fried onions",
     price: "₹349",
     image: "/images/menu-egg-biryani.jpg",
     category: "Dum Biryani",
@@ -46,8 +43,7 @@ const menuItems: MenuItem[] = [
   },
   {
     name: "Shami Kebab",
-    description:
-      "Melt-in-mouth lentil and lamb patties with Nizami spices",
+    description: "Melt-in-mouth lentil and lamb patties with Nizami spices",
     price: "₹299",
     image: "/images/menu-shami-kebab.jpg",
     category: "Kebabs",
@@ -61,8 +57,7 @@ const menuItems: MenuItem[] = [
   },
   {
     name: "Double Ka Meetha",
-    description:
-      "Bread pudding soaked in saffron milk, topped with dry fruits",
+    description: "Bread pudding soaked in saffron milk, topped with dry fruits",
     price: "₹199",
     image: "/images/menu-meetha.jpg",
     category: "Sides",
@@ -91,14 +86,18 @@ export default function Menu() {
       id="menu"
       style={{
         background: "#040810",
-        paddingTop: "140px",
-        paddingBottom: "140px",
-        paddingLeft: "80px",
-        paddingRight: "80px",
+        paddingTop: "clamp(60px, 10vw, 140px)",
+        paddingBottom: "clamp(60px, 10vw, 140px)",
       }}
     >
-      <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-        {/* Label — centered */}
+      <div
+        style={{
+          maxWidth: "1200px",
+          margin: "0 auto",
+          padding: "0 clamp(20px, 5vw, 80px)",
+        }}
+      >
+        {/* Label */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -116,7 +115,7 @@ export default function Menu() {
           Curated Selection
         </motion.div>
 
-        {/* Title — centered */}
+        {/* Title */}
         <motion.h2
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -125,7 +124,7 @@ export default function Menu() {
           style={{
             textAlign: "center",
             color: "#ffffff",
-            fontSize: "72px",
+            fontSize: "clamp(2.5rem, 8vw, 4.5rem)",
             fontWeight: 700,
             marginTop: "16px",
             letterSpacing: "-0.02em",
@@ -134,7 +133,7 @@ export default function Menu() {
           The Menu
         </motion.h2>
 
-        {/* Filter tabs — centered */}
+        {/* Filter tabs */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -143,8 +142,8 @@ export default function Menu() {
           style={{
             display: "flex",
             justifyContent: "center",
-            gap: "16px",
-            marginTop: "32px",
+            gap: "10px",
+            marginTop: "28px",
             flexWrap: "wrap",
           }}
         >
@@ -153,15 +152,15 @@ export default function Menu() {
               key={cat}
               onClick={() => setActiveCategory(cat)}
               style={{
-                padding: "10px 28px",
+                padding: "8px 20px",
                 borderRadius: "999px",
-                fontSize: "14px",
+                fontSize: "13px",
                 fontWeight: 500,
                 cursor: "pointer",
                 transition: "all 0.3s ease",
-                background:
-                  activeCategory === cat ? "#FF9500" : "transparent",
-                color: activeCategory === cat ? "#050505" : "rgba(255,255,255,0.6)",
+                background: activeCategory === cat ? "#FF9500" : "transparent",
+                color:
+                  activeCategory === cat ? "#050505" : "rgba(255,255,255,0.6)",
                 border:
                   activeCategory === cat
                     ? "1px solid #FF9500"
@@ -181,13 +180,7 @@ export default function Menu() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3 }}
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(4, 1fr)",
-              gap: "24px",
-              marginTop: "48px",
-              alignItems: "stretch",
-            }}
+            className="menu-grid"
           >
             {filteredItems.map((item, index) => (
               <motion.div
@@ -201,17 +194,15 @@ export default function Menu() {
                   borderRadius: "12px",
                   overflow: "hidden",
                   cursor: "pointer",
-                  transition: "all 0.4s ease",
                   display: "flex",
                   flexDirection: "column",
                 }}
-                className="menu-card"
               >
-                {/* Image — fixed 260px */}
+                {/* Image */}
                 <div
                   style={{
                     width: "100%",
-                    height: "260px",
+                    height: "220px",
                     position: "relative",
                     overflow: "hidden",
                     flexShrink: 0,
@@ -222,16 +213,23 @@ export default function Menu() {
                     alt={item.name}
                     fill
                     style={{ objectFit: "cover" }}
-                    sizes="(max-width: 1200px) 50vw, 25vw"
+                    sizes="(max-width: 480px) 100vw, (max-width: 767px) 50vw, 25vw"
                   />
                 </div>
 
-                {/* Text content */}
-                <div style={{ padding: "24px", flex: 1, display: "flex", flexDirection: "column" }}>
+                {/* Text */}
+                <div
+                  style={{
+                    padding: "20px",
+                    flex: 1,
+                    display: "flex",
+                    flexDirection: "column",
+                  }}
+                >
                   <div
                     style={{
                       color: "#ffffff",
-                      fontSize: "20px",
+                      fontSize: "17px",
                       fontWeight: 700,
                       marginBottom: "8px",
                       lineHeight: 1.3,
@@ -242,14 +240,14 @@ export default function Menu() {
                   <div
                     style={{
                       color: "rgba(255,255,255,0.6)",
-                      fontSize: "15px",
+                      fontSize: "14px",
                       lineHeight: 1.6,
                       marginBottom: "12px",
+                      flex: 1,
                       display: "-webkit-box",
                       WebkitLineClamp: 2,
                       WebkitBoxOrient: "vertical",
                       overflow: "hidden",
-                      flex: 1,
                     }}
                   >
                     {item.description}
@@ -269,6 +267,25 @@ export default function Menu() {
           </motion.div>
         </AnimatePresence>
       </div>
+
+      <style>{`
+        .menu-grid {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 20px;
+          margin-top: 40px;
+          align-items: stretch;
+        }
+        @media (max-width: 1024px) {
+          .menu-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+        @media (max-width: 767px) {
+          .menu-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+        }
+        @media (max-width: 480px) {
+          .menu-grid { grid-template-columns: 1fr; }
+        }
+      `}</style>
     </section>
   );
 }
